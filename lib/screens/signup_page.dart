@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:park/util/page_routes.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignupPage extends StatefulWidget {
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   String name = "";
   bool changeButton = false;
   final _formKey = GlobalKey<FormState>();
 
   moveToSignup(BuildContext context) {
-    Navigator.pushNamed(context, PageRoutes.signupRoute);
+    Navigator.pushNamed(context, PageRoutes.homeRoute);
   }
 
   moveToHome(BuildContext context) async {
@@ -42,18 +42,18 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               Image.asset(
-                "assets/images/login_image.png",
+                "assets/images/signup_image.png",
                 fit: BoxFit.cover,
               ),
               Text(
-                "Hi There ! $name",
+                "Get Started ! $name",
                 style:
-                    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10.0),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 18),
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 18),
                 child: Column(
                   children: [
                     TextFormField(
@@ -67,6 +67,16 @@ class _LoginPageState extends State<LoginPage> {
                       onChanged: (value) {
                         name = value;
                         setState(() {});
+                      },
+                    ),
+                    const SizedBox(height: 20.0),
+                    TextFormField(
+                      decoration: const InputDecoration(hintText: "Mobile number"),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return "Please Enter Mobile number !";
+                        }
+                        return null;
                       },
                     ),
                     const SizedBox(height: 20.0),
@@ -95,28 +105,13 @@ class _LoginPageState extends State<LoginPage> {
                     height: changeButton ? 25 : 40,
                     alignment: Alignment.center,
                     child: const Text(
-                      "Login",
+                      "Signup",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 50.0,
-              ),
-              InkWell(
-                onTap: () => moveToSignup(context),
-                child: const Text(
-                  "Don't have an account ? Click to signup",
-                  style: TextStyle(color: Colors.cyan),
-                ),
-              )
-
-              //  Text.rich(TextSpan(children: [
-              //   const TextSpan(text: "Don't have an account ? "),
-              //   TextSpan(text: "Signup",style: const TextStyle(color: Colors.cyan),recognizer: _gestureRecognizer),
-              // ]))
             ],
           ),
         ),

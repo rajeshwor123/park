@@ -15,6 +15,7 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: const Center(child: Text("hello world")),
+      drawer: const Drawer(),
     );
   }
 }
