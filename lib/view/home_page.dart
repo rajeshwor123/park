@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:park/util/page_routes.dart';
+import 'package:park/model/page_routes.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

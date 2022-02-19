@@ -1,34 +1,42 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:park/util/page_routes.dart';
+import 'package:park/model/page_routes.dart';
+import 'package:http/http.dart' as http;
+import 'package:park/model/service.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _LoginPageState extends State<LoginPage> {
   String name = "";
   bool changeButton = false;
   final _formKey = GlobalKey<FormState>();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+
 
   moveToSignup(BuildContext context) {
-    Navigator.pushNamed(context, PageRoutes.homeRoute);
+    Navigator.pushNamed(context, PageRoutes.signupRoute);
   }
 
   moveToHome(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      setState(() {
-        changeButton = true;
-      });
-      await Future.delayed(const Duration(seconds: 1));
-      await Navigator.pushNamed(context, PageRoutes.homeRoute);
-      setState(() {
-        changeButton = false;
-      });
+      //if(1) {
+        setState(() {
+          changeButton = true;
+        });
+        Service.login(email, password);
+        await Future.delayed(const Duration(seconds: 1));
+        await Navigator.pushNamed(context, PageRoutes.homeRoute);
+        setState(() {
+          changeButton = false;
+        });
+      //}
     }
   }
 
@@ -42,25 +50,26 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             children: [
               Image.asset(
-                "assets/images/signup_image.png",
+                "assets/images/login_image.png",
                 fit: BoxFit.cover,
               ),
               Text(
-                "Get Started ! $name",
+                "Hi There ! $name",
                 style:
-                const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10.0),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 18),
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 18),
                 child: Column(
                   children: [
                     TextFormField(
-                      decoration: const InputDecoration(hintText: "Username"),
+                      controller : email,
+                      decoration: const InputDecoration(hintText: "email"),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return "Please Enter Username !";
+                          return "Please Enter email !";
                         }
                         return null;
                       },
@@ -71,16 +80,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: const InputDecoration(hintText: "Mobile number"),
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return "Please Enter Mobile number !";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20.0),
-                    TextFormField(
+                      controller: password,
                       obscureText: true,
                       decoration: const InputDecoration(hintText: "Password"),
                       validator: (value) {
@@ -105,13 +105,28 @@ class _SignupPageState extends State<SignupPage> {
                     height: changeButton ? 25 : 40,
                     alignment: Alignment.center,
                     child: const Text(
-                      "Signup",
+                      "Login",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 50.0,
+              ),
+              InkWell(
+                onTap: () => moveToSignup(context),
+                child: const Text(
+                  "Don't have an account ? Click to signup",
+                  style: TextStyle(color: Colors.cyan),
+                ),
+              )
+
+              //  Text.rich(TextSpan(children: [
+              //   const TextSpan(text: "Don't have an account ? "),
+              //   TextSpan(text: "Signup",style: const TextStyle(color: Colors.cyan),recognizer: _gestureRecognizer),
+              // ]))
             ],
           ),
         ),
