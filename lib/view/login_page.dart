@@ -15,28 +15,34 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String name = "";
   bool changeButton = false;
+  String errorComment = "";
   final _formKey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-
   moveToSignup(BuildContext context) {
-    Navigator.pushNamed(context, PageRoutes.signupRoute);
+    Navigator.pushReplacementNamed(context, PageRoutes.signupRoute);
   }
 
   moveToHome(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      //if(1) {
+      bool status = await Service.login(email, password);
+      if (status) {
         setState(() {
+          errorComment = "";
           changeButton = true;
         });
         Service.login(email, password);
         await Future.delayed(const Duration(seconds: 1));
-        await Navigator.pushNamed(context, PageRoutes.homeRoute);
+        await Navigator.pushReplacementNamed(context, PageRoutes.homeRoute);
         setState(() {
           changeButton = false;
         });
-      //}
+      } else {
+        setState(() {
+          errorComment = "Try again with correct data";
+        });
+      }
     }
   }
 
@@ -65,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller : email,
+                      controller: email,
                       decoration: const InputDecoration(hintText: "email"),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
@@ -94,6 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 30.0),
+              Text(errorComment, style: const TextStyle(color: Colors.red)),
+              const SizedBox(height: 30.0),
               Material(
                 color: Colors.cyan,
                 borderRadius: BorderRadius.circular(changeButton ? 20 : 10),
@@ -121,12 +129,10 @@ class _LoginPageState extends State<LoginPage> {
                   "Don't have an account ? Click to signup",
                   style: TextStyle(color: Colors.cyan),
                 ),
-              )
-
-              //  Text.rich(TextSpan(children: [
-              //   const TextSpan(text: "Don't have an account ? "),
-              //   TextSpan(text: "Signup",style: const TextStyle(color: Colors.cyan),recognizer: _gestureRecognizer),
-              // ]))
+              ),
+              const SizedBox(
+                height: 50.0,
+              ),
             ],
           ),
         ),

@@ -4,10 +4,6 @@
 	$email = $_POST["email"];
 	$userPassword = $_POST["password"];
 
-	//$email = 'rn';
-	//$userPassword = 'rn';
-
-
 	$query = "select * from userinfo where email ='$email' and userPassword ='$userPassword' ";
 	$data = array();
 	$result = $con->query($query);
