@@ -24,24 +24,28 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.pushReplacementNamed(context, PageRoutes.signupRoute);
   }
 
-  moveToHome(BuildContext context) async {
+  moveToProfile(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      bool status = await Service.login(email, password);
+      bool status = await Service.login(email.text, password.text);
       if (status) {
         setState(() {
           errorComment = "";
           changeButton = true;
         });
-        Service.login(email, password);
+        Service.login(email.text, password.text);
         await Future.delayed(const Duration(seconds: 1));
-        await Navigator.pushReplacementNamed(context, PageRoutes.homeRoute);
-        setState(() {
+        await Navigator.pushReplacementNamed(context, PageRoutes.profileRoute);
+        if(mounted) {
+          setState(() {
           changeButton = false;
         });
+        }
       } else {
-        setState(() {
+        if(mounted) {
+          setState(() {
           errorComment = "Try again with correct data";
         });
+        }
       }
     }
   }
@@ -106,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.cyan,
                 borderRadius: BorderRadius.circular(changeButton ? 20 : 10),
                 child: InkWell(
-                  onTap: () => moveToHome(context),
+                  onTap: () => moveToProfile(context),
                   child: AnimatedContainer(
                     duration: const Duration(seconds: 1),
                     width: changeButton ? 300 : 100,
