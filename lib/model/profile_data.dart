@@ -9,11 +9,12 @@ class Profile{
   final String? carPrice ;
   final String? truckPrice ;
   final String? isAvailable;
+  final String? cyclePrice;
 
-  Profile(this.userName , this.email ,this.phone, this.latitude, this.longitude, this.bikePrice, this.carPrice, this.truckPrice, this.isAvailable);
+  Profile(this.userName , this.email ,this.phone, this.latitude, this.longitude, this.bikePrice, this.carPrice, this.truckPrice, this.isAvailable,this.cyclePrice);
 
   factory Profile.fromJson(Map<String,dynamic> data){
-    return  Profile(data['userName'],data['email'],data['phone'],data['latitude'],data['longitude'],data['bikePrice'],data['carPrice'],data['truckPrice'],data['isAvailable']);
+    return  Profile(data['userName'],data['email'],data['phone'],data['latitude'],data['longitude'],data['bikePrice'],data['carPrice'],data['truckPrice'],data['isAvailable'],data['cyclePrice']);
   }
 
 }
