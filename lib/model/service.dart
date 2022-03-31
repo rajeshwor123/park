@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:park/model/page_routes.dart';
 import 'package:http/http.dart' as http;
 import 'package:park/model/profile_data.dart';
 import 'package:park/view/profile_page.dart';
+import 'package:park/model/create_markers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Service {
   static Future<bool> signup(
@@ -28,7 +31,7 @@ class Service {
     var uri = Uri.parse(PageRoutes.loginUrl);
     var response = await http.post(uri, body: {
       "email": email,
-      "password": password,
+      "userPassword": password,
     });
     var data = json.decode(response.body);
     if (data.length == 1) {
@@ -45,10 +48,40 @@ class Service {
     var uri = Uri.parse(PageRoutes.loginUrl);
     var response = await http.post(uri, body: {
       "email": email,
-      "password": password,
+      "userPassword": password,
     });
     var data = json.decode(response.body);
     Profile profile = Profile.fromJson(data[0]);
     return profile;
+  }
+
+  static Future<bool> update(Profile profile) async {
+    var uri = Uri.parse(PageRoutes.updateUrl);
+    var response = await http.post(uri, body: {
+      "email": profile.email??"",
+      "userPassword": profile.userPassword??"",
+      "phone": profile.phone??"",
+      "userName": profile.userName??"",
+      "carPrice": profile.carPrice??"",
+      "bikePrice": profile.bikePrice??"",
+      "truckPrice": profile.truckPrice??"",
+      "cyclePrice":profile.cyclePrice??"",
+      "isAvailable":profile.isAvailable??"",
+      "latitude":profile.latitude,
+      "longitude":profile.longitude,
+    });
+    var data = json.decode(response.body);
+    if (data) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<List<Marker>> markerList()async {
+    var uri = Uri.parse(PageRoutes.getLatLng);
+    var response = await http.post(uri);
+    List<Marker> markers = await CreateMarkers.createMarkerList(response);
+    return markers;
   }
 }

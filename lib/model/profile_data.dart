@@ -1,20 +1,21 @@
 class Profile{
 
-  final String userName ;
-  final String email;
-  final String phone;
-  final double? latitude ;
-  final double? longitude ;
-  final String? bikePrice ;
-  final String? carPrice ;
-  final String? truckPrice ;
-  final String? isAvailable;
-  final String? cyclePrice;
+   String? userPassword;
+   String? userName ;
+   String? email;
+   String? phone;
+   String? latitude ;
+   String? longitude ;
+   String? bikePrice ;
+   String? carPrice ;
+   String? truckPrice ;
+   String? isAvailable;
+   String? cyclePrice;
 
-  Profile(this.userName , this.email ,this.phone, this.latitude, this.longitude, this.bikePrice, this.carPrice, this.truckPrice, this.isAvailable,this.cyclePrice);
+  Profile(this.userName ,this.userPassword, this.email ,this.phone, this.latitude, this.longitude, this.bikePrice, this.carPrice, this.truckPrice, this.isAvailable,this.cyclePrice);
 
   factory Profile.fromJson(Map<String,dynamic> data){
-    return  Profile(data['userName'],data['email'],data['phone'],data['latitude'],data['longitude'],data['bikePrice'],data['carPrice'],data['truckPrice'],data['isAvailable'],data['cyclePrice']);
+    return  Profile(data['userName'],data['userPassword'],data['email'],data['phone'],data['latitude'],data['longitude'],data['bikePrice'],data['carPrice'],data['truckPrice'],data['isAvailable'],data['cyclePrice']);
   }
 
 }

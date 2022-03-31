@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:park/model/page_routes.dart';
+import 'package:park/model/service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as lat_lng;
@@ -18,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   bool session = false;
   double latitude = 27.7;
   double longitude = 85.3;
+  List<Marker> markerList = [];
 
   Future<bool> getPrefs() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -60,10 +62,18 @@ class _HomePageState extends State<HomePage> {
     mapController.move(lat_lng.LatLng(latitude,longitude), 13.0);
   }
 
+  callMarkerList() async {
+      markerList = await Service.markerList();
+    setState(() {
+      markerList;
+    });
+  }
+
     @override
     void initState(){
       super.initState();
       currentLocation();
+      callMarkerList();
     }
 
   @override
@@ -74,9 +84,9 @@ class _HomePageState extends State<HomePage> {
           onPressed: () async{
             session = await getPrefs();
             if (session == true) {
-              Navigator.pushNamed(context, PageRoutes.profileRoute);
+              Navigator.pushNamed(context, PageRoutes.profileRoute).then((value) async => await callMarkerList());
             } else {
-              Navigator.pushNamed(context, PageRoutes.loginRoute);
+              Navigator.pushNamed(context, PageRoutes.loginRoute).then((value) async => await callMarkerList());
             }
             setState(() {});
           },
@@ -98,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 }
             ),
             MarkerLayerOptions(
-              markers: [
+              markers: markerList/*[
                 Marker(
                   width: 80.0,
                   height: 80.0,
@@ -110,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                       iconSize: 45.0,
                     )
                 ),
-              ],
+              ]*/
             ),
           ],
         ),
