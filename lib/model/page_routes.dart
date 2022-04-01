@@ -11,4 +11,5 @@ class PageRoutes {
   static String signupUrl = url+"/park/signup.php";
   static String updateUrl = url+"/park/update.php";
   static String getLatLng = url+"/park/getLatLng.php";
+  static String getProfileFromId = url+"/park/profileFromId.php";
 }

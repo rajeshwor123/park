@@ -55,6 +55,19 @@ class Service {
     return profile;
   }
 
+
+
+  static Future<Profile> getProfileFromId(String id) async {
+    var uri = Uri.parse(PageRoutes.getProfileFromId);
+    var response = await http.post(uri, body: {
+      "userId" : id,
+    });
+    var data = json.decode(response.body);
+    Profile profile = Profile.fromJson(data[0]);
+    return profile;
+  }
+
+
   static Future<bool> update(Profile profile) async {
     var uri = Uri.parse(PageRoutes.updateUrl);
     var response = await http.post(uri, body: {
@@ -78,10 +91,10 @@ class Service {
     }
   }
 
-  static Future<List<Marker>> markerList()async {
+  static Future<http.Response> markerList()async {
     var uri = Uri.parse(PageRoutes.getLatLng);
     var response = await http.post(uri);
-    List<Marker> markers = await CreateMarkers.createMarkerList(response);
-    return markers;
+    //List<Marker> markers = await CreateMarkers.createMarkerList(response);
+    return response;
   }
 }
