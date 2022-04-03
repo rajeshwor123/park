@@ -94,7 +94,6 @@ class Service {
   static Future<http.Response> markerList()async {
     var uri = Uri.parse(PageRoutes.getLatLng);
     var response = await http.post(uri);
-    //List<Marker> markers = await CreateMarkers.createMarkerList(response);
     return response;
   }
 }

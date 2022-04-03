@@ -47,12 +47,15 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   currentLocation() async {
     var position = await findLocation();
-    setState(() {
-      latitude = position.latitude;
-      longitude = position.longitude;
-    });
-    mapController.move(lat_lng.LatLng(latitude, longitude), 13.0);
+    if (mounted) {
+      setState(() {
+        latitude = position.latitude;
+        longitude = position.longitude;
+      });
+      mapController.move(lat_lng.LatLng(latitude, longitude), 13.0);
+    }
   }
+
 
   @override
   void initState() {
@@ -73,8 +76,8 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
         floatingActionButton: FloatingActionButton(
           onPressed: () async{
-            setShardPrefs();
-              Navigator.pop(context);
+            await setShardPrefs();
+            Navigator.pop(context);
           },
           child: const Icon(Icons.add),
         ),

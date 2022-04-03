@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as lat_lng;
 import 'package:location/location.dart';
-import 'package:park/view/bottom_sheet.dart';
+import 'pop_up_details.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -76,9 +76,10 @@ class _HomePageState extends State<HomePage> {
   late Profile profile;
   callMarkerList() async {
     await currentLocation();
+    markerList.clear();
     var response = await Service.markerList();
     var data = await json.decode(response.body);
-    for (int i = 0; i < data[0].length; i++) {
+    for (int i = 0; i < data.length; i++) {
       markerList.add(Marker(
         width: 80.0,
         height: 80.0,
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage> {
               profile = res;
             });
             showModalBottomSheet(context: ctx, builder: (builder){
-              return BottomPopUp(profile: profile);
+              return PopUpDetails(profile: profile);
             });
           },
         ),

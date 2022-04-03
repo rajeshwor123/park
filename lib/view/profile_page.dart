@@ -14,7 +14,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   String? password = "";
   String? userName = "";
   String? email = "";
@@ -30,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool changeLocationButton = false;
   String? errorComment = "";
   bool changeLogoutButton = false;
-  bool changeSpotButton = false;
+  bool changeEditButton = false;
   bool changeRemoveButton = false;
   final _formKey = GlobalKey<FormState>();
   String? displayLat = "";
@@ -59,8 +58,12 @@ class _ProfilePageState extends State<ProfilePage> {
         carPrice = profile.carPrice;
         truckPrice = profile.truckPrice;
         isAvailable = profile.isAvailable;
-        latitude = double.tryParse(profile.latitude.toString()) != null ? double.parse(profile.latitude!) : null;
-        longitude = double.tryParse(profile.longitude.toString()) != null ? double.parse(profile.longitude!) : null;
+        latitude = double.tryParse(profile.latitude.toString()) != null
+            ? double.parse(profile.latitude!)
+            : null;
+        longitude = double.tryParse(profile.longitude.toString()) != null
+            ? double.parse(profile.longitude!)
+            : null;
         cyclePrice = profile.cyclePrice;
         displayLat = latitude?.toStringAsFixed(1) ?? "";
         displayLon = longitude?.toStringAsFixed(1) ?? "";
@@ -99,6 +102,8 @@ class _ProfilePageState extends State<ProfilePage> {
     if (mounted) {
       setState(() {
         changeLocationButton = false;
+        changeEditButton = false;
+        changeLogoutButton = false;
       });
     }
   }
@@ -107,27 +112,26 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     email = sharedPreferences.getString('email');
     password = sharedPreferences.getString('password');
-     Profile profile = Profile.fromJson({
-       "email": email,
-       "userPassword": password ,
-       "phone": phoneController.text,
-       "userName": userNameController.text,
-       "carPrice": carPriceController.text,
-       "bikePrice": bikePriceController.text,
-       "truckPrice": truckPriceController.text,
-       "cyclePrice":cyclePriceController.text,
-       "isAvailable":isAvailableController.text,
-       "latitude":latitude.toString(),
-       "longitude":longitude.toString(),
-     });
-     bool status = await Service.update(profile);
-     if(status) {
-       setState(() {
-         changeSpotButton = true;
-       });
-       await Future.delayed(const Duration(seconds: 1));
-     }
-
+    Profile profile = Profile.fromJson({
+      "email": email,
+      "userPassword": password,
+      "phone": phoneController.text,
+      "userName": userNameController.text,
+      "carPrice": carPriceController.text,
+      "bikePrice": bikePriceController.text,
+      "truckPrice": truckPriceController.text,
+      "cyclePrice": cyclePriceController.text,
+      "isAvailable": isAvailableController.text,
+      "latitude": latitude.toString(),
+      "longitude": longitude.toString(),
+    });
+    bool status = await Service.update(profile);
+    if (status) {
+      setState(() {
+        changeEditButton = true;
+      });
+      await Future.delayed(const Duration(seconds: 1));
+    }
   }
 
   removeSpot(BuildContext context) async {}
@@ -139,15 +143,15 @@ class _ProfilePageState extends State<ProfilePage> {
     });
     await Future.delayed(const Duration(seconds: 1));
     await Navigator.pushNamed(context, PageRoutes.chooseLocRoute);
-    if (mounted) {
-      setState(() {
-        latitude = sharedPreferences.getDouble("latitude");
-        longitude = sharedPreferences.getDouble("longitude");
-        displayLat = latitude?.toStringAsFixed(1) ?? "";
-        displayLon = longitude?.toStringAsFixed(1) ?? "";
-        changeLocationButton = false;
-      });
-    }
+    setState(() {
+      latitude = sharedPreferences.getDouble("latitude");
+      longitude = sharedPreferences.getDouble("longitude");
+      displayLat = latitude?.toStringAsFixed(1) ?? "";
+      displayLon = longitude?.toStringAsFixed(1) ?? "";
+      changeLocationButton = false;
+      changeEditButton = false;
+      changeLogoutButton = false;
+    });
   }
 
   String name = "";
@@ -263,8 +267,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       Flexible(
                         child: Material(
                           color: Colors.cyan,
-                          borderRadius: BorderRadius.circular(
-                              changeLogoutButton ? 20 : 10),
+                          borderRadius:
+                              BorderRadius.circular(changeEditButton ? 20 : 10),
                           child: InkWell(
                             onTap: () {
                               if (latitude != null && longitude != null) {
@@ -278,7 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: AnimatedContainer(
                               duration: const Duration(seconds: 1),
                               width: 200,
-                              height: changeLocationButton ? 25 : 50,
+                              height: changeEditButton ? 25 : 50,
                               alignment: Alignment.center,
                               child: const Text(
                                 "Update",
@@ -295,13 +299,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Material(
                           color: Colors.cyan,
                           borderRadius: BorderRadius.circular(
-                              changeLogoutButton ? 20 : 10),
+                              changeLocationButton ? 20 : 10),
                           child: InkWell(
                             onTap: () => moveToChooseLoc(context),
                             child: AnimatedContainer(
                               duration: const Duration(seconds: 1),
                               width: 200,
-                              height: changeSpotButton ? 25 : 50,
+                              height: changeLocationButton ? 25 : 50,
                               alignment: Alignment.center,
                               child: const Text(
                                 "Location",
@@ -318,13 +322,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Material(
                           color: Colors.cyan,
                           borderRadius: BorderRadius.circular(
-                              changeLogoutButton ? 20 : 10),
+                              changeRemoveButton ? 20 : 10),
                           child: InkWell(
                             onTap: () => removeSpot(context),
                             child: AnimatedContainer(
                               duration: const Duration(seconds: 1),
                               width: 200,
-                              height: changeLocationButton ? 25 : 50,
+                              height: changeRemoveButton ? 25 : 50,
                               alignment: Alignment.center,
                               child: const Text(
                                 "Remove",
