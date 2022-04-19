@@ -61,6 +61,7 @@ class _PopUpDetailsState extends State<PopUpDetails> {
               const SizedBox(width: 15),
               Flexible(
                 child: TextFormField(
+                  keyboardType: TextInputType.none,
                   controller: TextEditingController(text: widget.profile.phone),
                 ),
               ),
@@ -70,6 +71,7 @@ class _PopUpDetailsState extends State<PopUpDetails> {
               const SizedBox(width: 15),
               Flexible(
                 child: TextFormField(
+                  keyboardType: TextInputType.none,
                   controller: TextEditingController(text: widget.profile.isAvailable),
                 ),
               ),
@@ -83,6 +85,7 @@ class _PopUpDetailsState extends State<PopUpDetails> {
               const SizedBox(width: 15),
               Flexible(
                 child: TextFormField(
+                  keyboardType: TextInputType.none,
                   controller: TextEditingController(text: widget.profile.carPrice),
                 ),
               ),
@@ -92,6 +95,7 @@ class _PopUpDetailsState extends State<PopUpDetails> {
               const SizedBox(width: 15),
               Flexible(
                 child: TextFormField(
+                  keyboardType: TextInputType.none,
                   controller: TextEditingController(text: widget.profile.bikePrice),
                 ),
               ),
@@ -105,6 +109,7 @@ class _PopUpDetailsState extends State<PopUpDetails> {
               const SizedBox(width: 15),
               Flexible(
                 child: TextFormField(
+                  keyboardType: TextInputType.none,
                   controller: TextEditingController(text: widget.profile.truckPrice),
                 ),
               ),
@@ -114,6 +119,7 @@ class _PopUpDetailsState extends State<PopUpDetails> {
               const SizedBox(width: 15),
               Flexible(
                 child: TextFormField(
+                  keyboardType: TextInputType.none,
                   controller: TextEditingController(text: widget.profile.cyclePrice),
                 ),
               ),
